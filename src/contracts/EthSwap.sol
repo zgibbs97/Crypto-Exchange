@@ -27,12 +27,25 @@ contract EthSwap {
 
         // Require that EthSwap has enough tokens
         require(token.balanceOf(address(this)) >= tokenAmount);
-        
+
         // Transfer tokens to the user who purchased
         token.transfer(msg.sender, tokenAmount);
 
         // Emit an event
         emit TokenPurchased(msg.sender, address(token), tokenAmount, rate);
+    }
+
+
+    function sellTokens (uint _amount) public {
+        
+        // Calculate amount of Ether to redeem
+        uint etherAmount = _amount / rate;
+        
+        
+        // Perform sale
+        token.transferFrom(msg.sender, address(this), _amount);
+        msg.sender.transfer(etherAmount);
+
     }
     
 }
